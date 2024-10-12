@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between items-center p-6">
-      <Link href={"/"} className="flex flex-row gap-5 text-2xl items-center font-extrabold">
+      <Link href={"/"} className="flex flex-row gap-5 text-2xl items-center font-extrabold text-white">
         <Dumbbell className="w-9 h-9 text-white" /> 
         ATLETA.TECH
       </Link>
