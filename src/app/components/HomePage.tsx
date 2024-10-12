@@ -74,7 +74,7 @@ const HomePage = () => {
         <p className="mb-8">
           Sé parte del futuro del deporte y apoya a los atletas que admiras
         </p>
-        <Link href='/' className="bg-white text-blue-900 px-8 py-3 rounded-full font-bold hover:bg-blue-100">
+        <Link href='/explore' className="bg-white text-blue-900 px-8 py-3 rounded-full font-bold hover:bg-blue-100">
           Comenzar ahora
         </Link>
       </div>

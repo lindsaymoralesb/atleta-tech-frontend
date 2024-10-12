@@ -6,6 +6,7 @@ import { ConnectButton } from "thirdweb/react";
 import { inAppWallet, createWallet } from "thirdweb/wallets";
 import { baseSepolia } from "thirdweb/chains";
 import Link from "next/link";
+import { Dumbbell } from "lucide-react";
 
 const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? "",
@@ -24,8 +25,11 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between items-center p-6">
-      <div className="text-2xl font-bold">Logo</div>
-      <div>
+      <Link href={"/"} className="flex flex-row gap-5 text-2xl items-center font-extrabold">
+        <Dumbbell className="w-9 h-9 text-white" /> 
+        ATLETA.TECH
+      </Link>
+      <div className="flex flex-row gap-8 items-center">
         <Link href="/explore" className="mx-4 hover:text-purple-300">
           Explorar
         </Link>
