@@ -1,10 +1,7 @@
-import { ThirdwebProvider } from "thirdweb/react";
+"use client";
+
 import CreateAthlete from "../../components/CreateAthlete";
 
 export default function CreateAthletePage() {
-  return (
-    <ThirdwebProvider>
-      <CreateAthlete />
-    </ThirdwebProvider>
-  );
+  return <CreateAthlete />;
 }
