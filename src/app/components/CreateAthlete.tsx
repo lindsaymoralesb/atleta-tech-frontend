@@ -1,18 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import { useRouter } from 'next/navigation';
 import { latamCountries, sports } from "../utils/catalogs";
 import { useConnectedWallets } from "thirdweb/react";
-// import { getContract, createThirdwebClient } from "thirdweb";
-// import { createThirdwebClient } from "thirdweb";
-// import { baseSepolia } from "thirdweb/chains";
-// import { TransactionButton } from "thirdweb/react";
 import Navbar from "./Navbar";
 import { Plus, TriangleAlert } from "lucide-react";
+import { useContract } from "../hooks/useContract";
 
 export default function CreateAthlete() {
   //   const router = useRouter();
+  const { handleCreateProfile, handleLinkNFTCollection } = useContract();
+  const [isLoading, setIsLoading] = useState(false);
   const connectedWallets = useConnectedWallets();
   const address = connectedWallets[0]?.getAccount()?.address ?? "";
   const [isClient, setIsClient] = useState(false);
@@ -24,21 +22,9 @@ export default function CreateAthlete() {
     nftCollections: [""],
   });
 
-  // const thirdwebClient = createThirdwebClient({
-  //   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? "",
-  // });
-
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  const isLoading = false;
-
-  // const contractTransaction = getContract({
-  //   client: thirdwebClient,
-  //   chain: baseSepolia,
-  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "",
-  // });
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -66,20 +52,25 @@ export default function CreateAthlete() {
     e.preventDefault();
     if (!address) return;
 
-    // try {
-    //   await createProfile({
-    //     args: [formData.name, formData.sport, formData.country, formData.bio],
-    //   });
-    //   // Link NFT collections
-    //   for (const collection of formData.nftCollections) {
-    //     if (collection) {
-    //       await contract?.call("linkNFTCollection", [collection]);
-    //     }
-    //   }
-    //   //   router.push(`/athlete/view/${address}`);
-    // } catch (error) {
-    //   console.error("Error creating profile:", error);
-    // }
+    try {
+      setIsLoading(true);
+      handleCreateProfile(
+        formData.name,
+        formData.sport,
+        formData.country,
+        formData.bio
+      );
+      // Link NFT collections
+      for (const collection of formData.nftCollections) {
+        if (collection) {
+          handleLinkNFTCollection(collection);
+        }
+      }
+    } catch (error) {
+      console.error("Error creating profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isClient) {
