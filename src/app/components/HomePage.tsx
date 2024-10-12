@@ -21,7 +21,7 @@ const HomePage = () => {
             <Link href='/explore' className="bg-white text-blue-900 px-6 py-3 rounded-full font-bold hover:bg-blue-100">
               Explorar historias
             </Link>
-            <Link href='/' className="border border-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-blue-900">
+            <Link href='/athlete/create' className="border border-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-blue-900">
               Soy atleta
             </Link>
           </div>
