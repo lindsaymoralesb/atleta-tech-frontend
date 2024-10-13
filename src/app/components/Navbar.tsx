@@ -1,16 +1,12 @@
 "use client";
 
-import { createThirdwebClient } from "thirdweb";
 import { ConnectButton } from "thirdweb/react";
 
 import { inAppWallet, createWallet } from "thirdweb/wallets";
 import { baseSepolia } from "thirdweb/chains";
 import Link from "next/link";
 import { Dumbbell } from "lucide-react";
-
-const client = createThirdwebClient({
-  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? "",
-});
+import { client } from "../utils/client";
 
 const Navbar = () => {
   const wallets = [

@@ -4,13 +4,10 @@ import { createThirdwebClient, getContract } from "thirdweb";
 import { defineChain } from "thirdweb/chains";
 import { prepareContractCall } from "thirdweb";
 import { useReadContract, useSendTransaction } from "thirdweb/react";
+import { client } from "../utils/client";
 
 export const useContract = () => {
   const { mutate: sendTransaction } = useSendTransaction();
-
-  const client = createThirdwebClient({
-    clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? "",
-  });
 
   // contract connection
   const contract = getContract({
