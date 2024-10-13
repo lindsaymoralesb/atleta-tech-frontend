@@ -26,7 +26,7 @@ const Navbar = () => {
         ATLETA.TECH
       </Link>
       <div className="flex flex-row gap-8 items-center">
-        <Link href="/explore" className="mx-4 hover:text-purple-300">
+        <Link href="/explore" className="mx-4 text-white hover:text-purple-300">
           Explorar
         </Link>
         <ConnectButton
