@@ -1,12 +1,18 @@
 "use client";
 
-import { createThirdwebClient, getContract } from "thirdweb";
+import { getContract } from "thirdweb";
 import { defineChain } from "thirdweb/chains";
 import { prepareContractCall } from "thirdweb";
-import { useReadContract, useSendTransaction } from "thirdweb/react";
+import {
+  useConnectedWallets,
+  useReadContract,
+  useSendTransaction,
+} from "thirdweb/react";
 import { client } from "../utils/client";
 
 export const useContract = () => {
+  const connectedWallets = useConnectedWallets();
+  const address = connectedWallets[0]?.getAccount()?.address ?? "";
   const { mutate: sendTransaction } = useSendTransaction();
 
   // contract connection
@@ -85,5 +91,14 @@ export const useContract = () => {
     sendTransaction(transaction);
   };
 
-  return { client, contract, getAthleteCount, getAthleteAddressByIndex, getAthleteProfile, handleCreateProfile, handleLinkNFTCollection };
-}
+  return {
+    client,
+    contract,
+    address,
+    getAthleteCount,
+    getAthleteAddressByIndex,
+    getAthleteProfile,
+    handleCreateProfile,
+    handleLinkNFTCollection,
+  };
+};
