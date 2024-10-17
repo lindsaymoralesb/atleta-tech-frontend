@@ -1,19 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { latamCountries, sports } from "../utils/catalogs";
-import { useConnectedWallets } from "thirdweb/react";
 import Navbar from "./Navbar";
 import { Plus, TriangleAlert } from "lucide-react";
 import { useContract } from "../hooks/useContract";
+import { useRouter } from "next/navigation";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { CircularProgress } from "@mui/material";
 
 export default function CreateAthlete() {
-  //   const router = useRouter();
-  const { handleCreateProfile, handleLinkNFTCollection } = useContract();
+  const router = useRouter();
+  const { address, handleCreateProfile } =
+    useContract();
   const [isLoading, setIsLoading] = useState(false);
-  const connectedWallets = useConnectedWallets();
-  const address = connectedWallets[0]?.getAccount()?.address ?? "";
-  const [isClient, setIsClient] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     sport: "",
@@ -21,10 +25,6 @@ export default function CreateAthlete() {
     bio: "",
     nftCollections: [""],
   });
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -54,28 +54,46 @@ export default function CreateAthlete() {
 
     try {
       setIsLoading(true);
-      handleCreateProfile(
+      const result = await handleCreateProfile(
         formData.name,
         formData.sport,
         formData.country,
-        formData.bio
+        formData.bio,
+        formData.nftCollections
       );
-      // Link NFT collections
-      for (const collection of formData.nftCollections) {
-        if (collection) {
-          handleLinkNFTCollection(collection);
-        }
+      if (result.success) {
+        router.push(`/athlete/view/${address}`);
+      } else {
+        setError("Ha ocurrido un error. Intenta de nuevo!");
+        console.error("Error creating profile:", result.error);
       }
     } catch (error) {
+      setError("Ha ocurrido un error. Intenta de nuevo!");
       console.error("Error creating profile:", error);
     } finally {
       setIsLoading(false);
+      setOpenSnackbar(true);
     }
   };
 
-  if (!isClient) {
-    return null;
-  }
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
+  useEffect(() => {}, [isLoading]);
+
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseSnackbar}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9]">
@@ -193,13 +211,19 @@ export default function CreateAthlete() {
                   <Plus className="w-6 h-6 text-blue-800 hover:text-blue-600" />
                   Añadir otra colección NFT
                 </button>
-                <div className="pt-6 text-center">
+                <div className="pt-6 text-center flex justify-center">
                   <button
                     type="submit"
-                    className="bg-white border-2 border-solid border-blue-800 text-blue-800 rounded-md px-6 py-2 hover:bg-blue-800 hover:text-white transition duration-300"
+                    className={`bg-white text-blue-800 rounded-md px-6 py-2 hover:bg-blue-800 hover:text-white transition duration-300 flex justify-center ${
+                      !isLoading ? "border-2 border-solid border-blue-800" : ""
+                    }`}
                     disabled={isLoading}
                   >
-                    {isLoading ? "Creando perfil..." : "Crear perfil"}
+                    {isLoading ? (
+                      <CircularProgress size={30} />
+                    ) : (
+                      "Crear perfil"
+                    )}
                   </button>
                 </div>
               </form>
@@ -208,16 +232,23 @@ export default function CreateAthlete() {
         </div>
       ) : (
         <div className="relative sm:w-[60%] sm:mx-auto flex justify-center">
-          <div className="relative px-2 py-10 bg-white shadow-lg sm:rounded-3xl w-full">
+          <div className="relative px-2 py-10 shadow-lg sm:rounded-3xl w-full mt-[100px]">
             <div className="flex flex-col gap-10 items-center justify-center">
-              <TriangleAlert className="w-20 h-20 text-blue-800 hover:text-blue-600" />
-              <h1 className="text-3xl font-semibold text-center mb-6 text-blue-800">
+              <TriangleAlert className="w-20 h-20 text-white" />
+              <h1 className="text-3xl font-semibold text-center mb-6 text-white">
                 Debes iniciar sesión primero
               </h1>
             </div>
           </div>
         </div>
       )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message={error ?? "Perfil creado con éxito!"}
+        action={action}
+      />
     </div>
   );
 }
