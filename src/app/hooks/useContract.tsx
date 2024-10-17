@@ -12,7 +12,7 @@ import { client } from "../utils/client";
 
 export const useContract = () => {
   const connectedWallets = useConnectedWallets();
-  const address = connectedWallets[0]?.getAccount()?.address ?? "";
+  const address = connectedWallets.find(wallet => wallet.id === "smart")?.getAccount()?.address ?? "";
   const { mutate: sendTransaction } = useSendTransaction();
 
   // contract connection
@@ -25,7 +25,7 @@ export const useContract = () => {
   //read contract
 
   const getAthleteCount = () => {
-    const { data, isPending } = useReadContract({
+    return useReadContract({
       contract,
       method: "function getAthleteCount() view returns (uint256)",
       params: [],
@@ -33,7 +33,7 @@ export const useContract = () => {
   };
 
   const getAthleteAddressByIndex = (_index: bigint) => {
-    const { data, isPending } = useReadContract({
+    return useReadContract({
       contract,
       method:
         "function getAthleteAddressByIndex(uint256 _index) view returns (address)",
@@ -42,7 +42,7 @@ export const useContract = () => {
   };
 
   const getAthleteProfile = (_athlete: string) => {
-    const { data, isPending } = useReadContract({
+    return useReadContract({
       contract,
       method:
         "function getProfile(address _athlete) view returns (string name, string sport, string country, string bio, string[] nftCollections, uint256 createdAt)",
@@ -52,43 +52,131 @@ export const useContract = () => {
 
   //write contract
 
-  const handleCreateProfile = (
+  const handleCreateProfile = async (
+    _name: string,
+    _sport: string,
+    _country: string,
+    _bio: string,
+    _nftCollections: string[]
+  ) => {
+    try {
+      const transaction = prepareContractCall({
+        contract,
+        method:
+          "function createProfile(string _name, string _sport, string _country, string _bio, string[] _nftCollections)",
+        params: [_name, _sport, _country, _bio, _nftCollections],
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        sendTransaction(transaction, {
+          onSuccess: (result) => {
+            console.log("Transaction sent:", result);
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      return {
+        success: true,
+        message: "Profile creation transaction sent successfully",
+      };
+    } catch (error: any) {
+      if (error.code === 4001) {
+        return {
+          success: false,
+          error: "Transaction was cancelled by the user.",
+        };
+      }
+      return {
+        success: false,
+        error: error.message || "An error occurred during the transaction.",
+      };
+    }
+  };
+
+  const handleLinkNFTCollection = async (_collectionAddress: string) => {
+    try {
+      const transaction = prepareContractCall({
+        contract,
+        method: "function linkNFTCollection(string _collectionAddress)",
+        params: [_collectionAddress],
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        sendTransaction(transaction, {
+          onSuccess: (result) => {
+            console.log("Transaction sent:", result);
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
+
+      return {
+        success: true,
+        message: "Link NFT transaction sent successfully",
+      };
+    } catch (error: any) {
+      if (error.code === 4001) {
+        return {
+          success: false,
+          error: "Transaction was cancelled by the user.",
+        };
+      }
+      return {
+        success: false,
+        error: error.message || "An error occurred during the transaction.",
+      };
+    }
+  };
+
+  const handleUpdateProfile = async (
     _name: string,
     _sport: string,
     _country: string,
     _bio: string
   ) => {
-    const transaction = prepareContractCall({
-      contract,
-      method:
-        "function createProfile(string _name, string _sport, string _country, string _bio)",
-      params: [_name, _sport, _country, _bio],
-    });
-    sendTransaction(transaction);
-  };
+    try {
+      const transaction = prepareContractCall({
+        contract,
+        method:
+          "function updateProfile(string _name, string _sport, string _country, string _bio)",
+        params: [_name, _sport, _country, _bio],
+      });
 
-  const handleLinkNFTCollection = (_collectionAddress: string) => {
-    const transaction = prepareContractCall({
-      contract,
-      method: "function linkNFTCollection(string _collectionAddress)",
-      params: [_collectionAddress],
-    });
-    sendTransaction(transaction);
-  };
+      await new Promise<void>((resolve, reject) => {
+        sendTransaction(transaction, {
+          onSuccess: (result) => {
+            console.log("Transaction sent:", result);
+            resolve();
+          },
+          onError: (error) => {
+            reject(error);
+          },
+        });
+      });
 
-  const handleUpdateProfile = (
-    _name: string,
-    _sport: string,
-    _country: string,
-    _bio: string
-  ) => {
-    const transaction = prepareContractCall({
-      contract,
-      method:
-        "function updateProfile(string _name, string _sport, string _country, string _bio)",
-      params: [_name, _sport, _country, _bio],
-    });
-    sendTransaction(transaction);
+      return {
+        success: true,
+        message: "Profile update transaction sent successfully",
+      };
+    } catch (error: any) {
+      if (error.code === 4001) {
+        return {
+          success: false,
+          error: "Transaction was cancelled by the user.",
+        };
+      }
+      return {
+        success: false,
+        error: error.message || "An error occurred during the transaction.",
+      };
+    }
   };
 
   return {
@@ -99,6 +187,7 @@ export const useContract = () => {
     getAthleteAddressByIndex,
     getAthleteProfile,
     handleCreateProfile,
+    handleUpdateProfile,
     handleLinkNFTCollection,
   };
 };
