@@ -16,10 +16,24 @@ const auth = (apiKey: string) => {
 // Function to get NFT item by ID
 const getItemById = async ({ itemId }: { itemId: string }) => {
   try {
+    console.log(`Fetching NFT data for ID: ${itemId}`);
     const response = await rarible.get(`/items/${itemId}`);
     return response.data; // Return the NFT data
   } catch (error) {
+    console.error(`Failed to fetch NFT data: ${error}`);
     throw new Error(`Failed to fetch NFT data: ${error}`);
+  }
+};
+
+// Function to get NFTs by collection
+const getItemsByCollection = async ({ collectionId }: { collectionId: string }) => {
+  try {
+    console.log(`Fetching NFTs for collection ID: ${collectionId}`);
+    const response = await rarible.get(`/items/byCollection?collection=${collectionId}`);
+    return response.data; // Return the NFTs data
+  } catch (error) {
+    console.error(`Failed to fetch NFTs data: ${error}`);
+    throw new Error(`Failed to fetch NFTs data: ${error}`);
   }
 };
 
@@ -27,4 +41,6 @@ const getItemById = async ({ itemId }: { itemId: string }) => {
 export default {
   auth,
   getItemById,
+  getItemsByCollection, // Add this line
 };
+
