@@ -5,14 +5,15 @@ import { defineChain } from "thirdweb/chains";
 import { prepareContractCall } from "thirdweb";
 import {
   useConnectedWallets,
-  useReadContract,
   useSendTransaction,
 } from "thirdweb/react";
 import { client } from "../utils/client";
 
 export const useContract = () => {
   const connectedWallets = useConnectedWallets();
-  const address = connectedWallets.find(wallet => wallet.id === "smart")?.getAccount()?.address ?? "";
+  const address =
+    connectedWallets.find((wallet) => wallet.id === "smart")?.getAccount()
+      ?.address ?? "";
   const { mutate: sendTransaction } = useSendTransaction();
 
   // contract connection
@@ -21,34 +22,6 @@ export const useContract = () => {
     chain: defineChain(84532),
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "",
   });
-
-  //read contract
-
-  const getAthleteCount = () => {
-    return useReadContract({
-      contract,
-      method: "function getAthleteCount() view returns (uint256)",
-      params: [],
-    });
-  };
-
-  const getAthleteAddressByIndex = (_index: bigint) => {
-    return useReadContract({
-      contract,
-      method:
-        "function getAthleteAddressByIndex(uint256 _index) view returns (address)",
-      params: [_index],
-    });
-  };
-
-  const getAthleteProfile = (_athlete: string) => {
-    return useReadContract({
-      contract,
-      method:
-        "function getProfile(address _athlete) view returns (string name, string sport, string country, string bio, string[] nftCollections, uint256 createdAt)",
-      params: [_athlete],
-    });
-  };
 
   //write contract
 
@@ -183,9 +156,6 @@ export const useContract = () => {
     client,
     contract,
     address,
-    getAthleteCount,
-    getAthleteAddressByIndex,
-    getAthleteProfile,
     handleCreateProfile,
     handleUpdateProfile,
     handleLinkNFTCollection,
