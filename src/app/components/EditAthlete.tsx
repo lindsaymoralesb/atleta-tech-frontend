@@ -101,7 +101,7 @@ export default function EditAthlete() {
       setLoadingRequestNFTs(true);
       if (nftCollections) {
         for (const collection of nftCollections) {
-          if (collection) {
+          if (collection !== "") {
             const result = await handleLinkNFTCollection(collection);
             if (!result.success) {
               throw new Error(`Failed to link NFT collection: ${collection}`);
@@ -135,16 +135,16 @@ export default function EditAthlete() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9]">
+    <div className="min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9] flex flex-col">
       <Navbar />
       {address ? (
         isLoading ? (
-          <div className="relative px-2 py-10 w-full flex items-center justify-center h-full text-bold text-2xl">
+          <div className="relative px-2 py-10 w-full flex items-center justify-center h-full text-bold text-2xl flex-1">
             Cargando...
           </div>
         ) : (
           profileData.name !== undefined && (
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex flex-col items-center flex-1">
               <div className="relative px-2 py-10 bg-white shadow-lg w-full">
                 <div className="max-w-[80%] mx-auto">
                   <h1 className="text-3xl font-semibold text-center mb-6 text-blue-800 uppercase">
@@ -312,8 +312,8 @@ export default function EditAthlete() {
           )
         )
       ) : (
-        <div className="relative sm:w-[60%] sm:mx-auto flex justify-center">
-          <div className="relative px-2 py-10 w-full mt-[100px]">
+        <div className="relative sm:w-[60%] sm:mx-auto flex justify-center flex-1">
+          <div className="relative px-2 py-10 w-full">
             <div className="flex flex-col gap-10 items-center justify-center">
               <TriangleAlert className="w-20 h-20 text-white" />
               <h1 className="text-3xl font-semibold text-center mb-6 text-white">
