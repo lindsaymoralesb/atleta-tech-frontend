@@ -20,13 +20,13 @@ export default function AthleteView({ address }: { address: string }) {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9] text-2xl">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9] text-2xl flex flex-col">
       <Navbar />
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full flex-1">
         {isLoading ? (
           <>Cargando...</>
         ) : (
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-10 relative">
+          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-10 relative flex-1">
             {smartAddress === address && (
               <Button
                 className="!absolute top-5 right-0"
