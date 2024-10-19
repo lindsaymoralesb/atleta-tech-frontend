@@ -126,7 +126,7 @@ const NFTDetails: React.FC<NFTDetailsProps> = ({ collectionUrls }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
+    <div className="flex flex-row flex-wrap gap-6 p-6 justify-center">
       {filteredNftData.map((nft) => {
         return (
           <NFTCard key={nft.id} nft={nft} collectionUrl={nft.collectionUrl} />
