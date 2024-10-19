@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { NFT } from "./NFTDetails";
 
 interface NFTCardProps {
-    nft: NFT;
-    collectionUrl: string;
+  nft: NFT;
+  collectionUrl: string;
 }
 
 const NFTCard: React.FC<NFTCardProps> = ({ nft, collectionUrl }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const imageUrl = nft.meta.content?.find(
     (item: { mimeType: string; url: string }) =>
       item.mimeType === "image/jpeg" || item.mimeType === "image/png"
@@ -15,17 +17,21 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collectionUrl }) => {
   const priceUsd = nft.bestSellOrder?.makePriceUsd;
 
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden max-w-fit">
-      <div className="aspect-square max-w-[300px]">
+    <a
+      className="bg-gray-800 rounded-lg overflow-hidden max-w-fit p-4 border"
+      href={collectionUrl}
+      target="_blank"
+    >
+      <div className="aspect-square max-w-[300px] rounded-lg">
         {imageUrl && (
           <img
             src={imageUrl}
             alt={nft.meta.name}
-            className="w-full h-full object-top object-cover"
+            className="w-full h-full object-top object-cover rounded-lg"
           />
         )}
       </div>
-      <div className="p-4">
+      <div className="mt-4">
         <h3 className="text-white font-semibold truncate">{nft.meta.name}</h3>
         {price && priceUsd ? (
           <div className="mt-2 text-sm bg-slate-600 p-1.5 rounded-md">
@@ -41,7 +47,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collectionUrl }) => {
           <p className="mt-2 text-sm text-gray-400">Not for sale</p>
         )}
       </div>
-    </div>
+    </a>
   );
 };
 
