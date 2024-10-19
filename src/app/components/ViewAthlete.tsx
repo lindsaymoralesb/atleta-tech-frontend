@@ -6,9 +6,11 @@ import Navbar from "./Navbar";
 import { useReadContract } from "thirdweb/react";
 import { useContract } from "../hooks/useContract";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function AthleteView({ address }: { address: string }) {
   const { address: smartAddress, contract } = useContract();
+  const router = useRouter();
 
   const { data, isLoading } = useReadContract({
     contract,
@@ -25,8 +27,13 @@ export default function AthleteView({ address }: { address: string }) {
           <>Cargando...</>
         ) : (
           <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-10 relative">
-            {(smartAddress === address) && (
-              <Button className="!absolute top-5 right-0">
+            {smartAddress === address && (
+              <Button
+                className="!absolute top-5 right-0"
+                onClick={() => {
+                  router.push("/athlete/edit");
+                }}
+              >
                 <Edit className="mr-2" size={20} />
               </Button>
             )}

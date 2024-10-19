@@ -232,7 +232,7 @@ export default function CreateAthlete() {
         </div>
       ) : (
         <div className="relative sm:w-[60%] sm:mx-auto flex justify-center">
-          <div className="relative px-2 py-10 shadow-lg sm:rounded-3xl w-full mt-[100px]">
+          <div className="relative px-2 py-10 w-full mt-[100px]">
             <div className="flex flex-col gap-10 items-center justify-center">
               <TriangleAlert className="w-20 h-20 text-white" />
               <h1 className="text-3xl font-semibold text-center mb-6 text-white">
