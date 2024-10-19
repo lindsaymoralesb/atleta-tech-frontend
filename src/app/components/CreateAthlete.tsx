@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { latamCountries, sports } from "../utils/catalogs";
 import Navbar from "./Navbar";
 import { Plus, TriangleAlert } from "lucide-react";
@@ -80,8 +80,6 @@ export default function CreateAthlete() {
     setOpenSnackbar(false);
   };
 
-  useEffect(() => {}, [isLoading]);
-
   const action = (
     <>
       <IconButton
@@ -96,12 +94,12 @@ export default function CreateAthlete() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9]">
+    <div className="min-h-screen bg-gradient-to-br from-[#001838] to-[#bcc6e9] flex flex-col">
       <Navbar />
       {address ? (
-        <div className="relative sm:w-[60%] sm:mx-auto flex justify-center">
-          <div className="relative px-2 py-10 bg-white shadow-lg sm:rounded-3xl w-full">
-            <div className="max-w-md mx-auto">
+        <div className="relative flex justify-center flex-1">
+          <div className="relative px-2 py-10 bg-white w-full">
+            <div className="max-w-[80%] mx-auto mt-12">
               <div>
                 <h1 className="text-3xl font-semibold text-center mb-6 text-blue-800 uppercase">
                   Crea tu perfil de atleta
