@@ -28,9 +28,13 @@ export interface NFT {
 
 interface NFTDetailsProps {
   collectionUrls: string[];
+  athleteName: string;
 }
 
-const NFTDetails: React.FC<NFTDetailsProps> = ({ collectionUrls }) => {
+const NFTDetails: React.FC<NFTDetailsProps> = ({
+  collectionUrls,
+  athleteName,
+}) => {
   const [nftData, setNftData] = useState<NFT[]>([]);
   const [filteredNftData, setFilteredNftData] = useState<NFT[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -118,20 +122,23 @@ const NFTDetails: React.FC<NFTDetailsProps> = ({ collectionUrls }) => {
   };
 
   if (error) {
-    return <div className="text-red-500">Error loading NFT data: {error}</div>;
+    return <div className="text-red-500">Ha ocurrido un error, por favor refresca la página.</div>;
   }
 
   if (filteredNftData.length === 0) {
-    return <div className="text-gray-500">Loading...</div>;
+    return <div className="text-gray-500">Cargando...</div>;
   }
 
   return (
-    <div className="flex flex-row flex-wrap gap-6 p-6 justify-center">
-      {filteredNftData.map((nft) => {
-        return (
-          <NFTCard key={nft.id} nft={nft} collectionUrl={nft.collectionUrl} />
-        );
-      })}
+    <div className="mx-auto py-[30px] px-[20px]">
+      <h2 className="text-white text-2xl mb-4">{athleteName}</h2>
+      <div className="flex flex-row flex-wrap gap-[30px]">
+        {filteredNftData.map((nft) => {
+          return (
+            <NFTCard key={nft.id} nft={nft} collectionUrl={nft.collectionUrl} />
+          );
+        })}
+      </div>
     </div>
   );
 };
