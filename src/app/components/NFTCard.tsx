@@ -4,9 +4,14 @@ import { NFT } from "./NFTDetails";
 interface NFTCardProps {
   nft: NFT;
   collectionUrl: string;
+  athleteAddress: string;
 }
 
-const NFTCard: React.FC<NFTCardProps> = ({ nft, collectionUrl }) => {
+const NFTCard: React.FC<NFTCardProps> = ({
+  nft,
+  collectionUrl,
+  athleteAddress,
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const imageUrl = nft.meta.content?.find(
@@ -64,21 +69,22 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collectionUrl }) => {
           <div>
             <h3 className="text-white font-semibold mb-2">{nft.meta.name}</h3>
             <div className="max-h-[185px] overflow-scroll relative">
-              <p className="text-gray-300 text-sm">
-                {nft.meta.description}
-              </p>
+              <p className="text-gray-300 text-sm">{nft.meta.description}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <a
-              href=""
-              type="button"
-              className="bg-white text-blue-800 rounded-md px-6 py-2 hover:bg-blue-800 hover:text-white transition duration-300 flex justify-center"
-            >
-              Conocer historia
-            </a>
+            {athleteAddress !== "" && (
+              <a
+                href={`/athlete/view/${athleteAddress}`}
+                type="button"
+                className="bg-white text-blue-800 rounded-md px-6 py-2 hover:bg-blue-800 hover:text-white transition duration-300 flex justify-center"
+              >
+                Conocer historia
+              </a>
+            )}
             <a
               href={collectionUrl}
+              target="_blank"
               type="button"
               className="bg-white text-blue-800 rounded-md px-6 py-2 hover:bg-blue-800 hover:text-white transition duration-300 flex justify-center"
             >

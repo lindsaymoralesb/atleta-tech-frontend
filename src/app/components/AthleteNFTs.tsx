@@ -40,7 +40,13 @@ const AthleteNFTs: React.FC<AthleteNFTsProps> = ({ athleteIndex }) => {
     return <div>No profile data found for this athlete.</div>;
   }
 
-  return <NFTDetails collectionUrls={Array.from(profile[4])} athleteName={profile[0]} />;
+  return (
+    <NFTDetails
+      collectionUrls={Array.from(profile[4])}
+      athleteName={profile[0]}
+      athleteAddress={athleteAddress ?? ""}
+    />
+  );
 };
 
 export default AthleteNFTs;

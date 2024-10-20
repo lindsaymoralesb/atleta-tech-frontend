@@ -29,11 +29,13 @@ export interface NFT {
 interface NFTDetailsProps {
   collectionUrls: string[];
   athleteName: string;
+  athleteAddress: string;
 }
 
 const NFTDetails: React.FC<NFTDetailsProps> = ({
   collectionUrls,
   athleteName,
+  athleteAddress,
 }) => {
   const [nftData, setNftData] = useState<NFT[]>([]);
   const [filteredNftData, setFilteredNftData] = useState<NFT[]>([]);
@@ -122,7 +124,11 @@ const NFTDetails: React.FC<NFTDetailsProps> = ({
   };
 
   if (error) {
-    return <div className="text-red-500">Ha ocurrido un error, por favor refresca la página.</div>;
+    return (
+      <div className="text-red-500">
+        Ha ocurrido un error, por favor refresca la página.
+      </div>
+    );
   }
 
   if (filteredNftData.length === 0) {
@@ -135,7 +141,12 @@ const NFTDetails: React.FC<NFTDetailsProps> = ({
       <div className="flex flex-row flex-wrap gap-[30px]">
         {filteredNftData.map((nft) => {
           return (
-            <NFTCard key={nft.id} nft={nft} collectionUrl={nft.collectionUrl} />
+            <NFTCard
+              key={nft.id}
+              nft={nft}
+              collectionUrl={nft.collectionUrl}
+              athleteAddress={athleteAddress}
+            />
           );
         })}
       </div>
