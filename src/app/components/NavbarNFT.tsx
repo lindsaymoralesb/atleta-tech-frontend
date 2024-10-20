@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Dumbbell } from "lucide-react";
 import { client } from "../utils/client";
 import React, { useState } from "react";
+import { Tooltip } from "@mui/material";
 
 // Define the props type for NavbarNFT
 interface NavbarNFTProps {
@@ -38,13 +39,15 @@ const NavbarNFT: React.FC<NavbarNFTProps> = ({ onSearch }) => {
         ATLETA.TECH
       </Link>
       <div className="flex flex-row gap-8 items-center">
-        <input
-          type="text"
-          placeholder="Search NFTs..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="w-64 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-        />
+        <Tooltip title="Comming soon...">
+          <input
+            type="text"
+            placeholder="Search NFTs..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-64 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          />
+        </Tooltip>
         <ConnectButton
           client={client}
           wallets={wallets}

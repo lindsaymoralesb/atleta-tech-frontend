@@ -74,7 +74,7 @@ export default function AthleteView({ address }: { address: string }) {
                     className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
                   >
                     <LinkIcon className="mr-2" size={20} />
-                    <span>Collection {index + 1}</span>
+                    <span>Ver colección {index + 1}</span>
                   </a>
                 ))}
               </div>
